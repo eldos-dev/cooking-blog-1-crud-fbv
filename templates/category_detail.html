@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Category Detail{% endblock %}
+
+
+{% block content %}
+
+<!-- Banner -->
+<section id="banner">
+	<div class="content">
+		<header>
+			<h1>{{ category.name }}</h1>
+<!--			<p>A free and fully responsive site template</p>-->
+		</header>
+		<p>Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac quam. Lorem ipsum dolor sit nullam.</p>
+		<h3>Подкатегории:</h3>
+		{% if category.get_children %}
+			<ul class="actions">
+				{% for child in category.get_children %}
+				<li><a href="{% url 'category-detail' child.slug %}" class="button big">{{ child.name }}</a></li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+	<span class="image object">
+		<img src="{{ category.image.url }}" alt="" />
+	</span>
+</section>
+
+
+{% if not category.get_children %}
+<!-- Section -->
+	<section>
+		<header class="major">
+			<h2>{{ category.name }}</h2>
+		</header>
+		<div class="posts">
+			{% for recipe in recipes %}
+				<article>
+					<a href="#" class="image"><img src="{{ recipe.images.first }}" style="width: 200px; height: 200px" alt="" /></a>
+					<h3>{{ recipe }}</h3>
+					<p>{{ recipe.description|truncatewords:13 }}</p> <!-- truncatewords:10 - количество слов указываем, сколько надо показывать -->
+					<ul class="actions">
+						<li><a href="{% url 'recipe-detail' recipe.id %}" class="button">More</a></li>
+					</ul>
+				</article>
+			{% endfor %}
+		</div>
+	</section>
+{% endif %}
+{% endblock %}
